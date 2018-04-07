@@ -10,8 +10,8 @@ public class GAction {
 	public GAction(String name) {
 		_name = name;
 		_cost = 0;
-		_expectations = new GState(_name+"_expectations");
-		_results = new GState(_name+"_results");
+		_expectations = new GState();
+		_results = new GState();
 	}
 
 	public void expect(String name, boolean value) {
@@ -36,5 +36,9 @@ public class GAction {
 	public int cost() {
 		return _cost;
 	}
-
+	
+	@Override
+	public String toString() {
+		return _name + ": " + expectations() + " => " + results();
+	}
 }

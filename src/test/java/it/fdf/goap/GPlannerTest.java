@@ -11,7 +11,7 @@ public class GPlannerTest extends TestCase {
 	}
 	
 	public void testAlreadySatisfiedGoal() {
-		GState currentStatus = new GState("global-state");
+		GState currentStatus = new GState();
 		currentStatus.set("isMoving", false);
 		currentStatus.set("hasTarget", false);
 		
@@ -52,7 +52,7 @@ public class GPlannerTest extends TestCase {
 	}
 	
 	public void testReachGoalWithOneAction() {
-		GState currentStatus = new GState("global-state");
+		GState currentStatus = new GState();
 		currentStatus.set("isMoving", true);
 		currentStatus.set("hasTarget", true);
 		
@@ -96,7 +96,7 @@ public class GPlannerTest extends TestCase {
 
 	
 	public void testReachGoalWithTwoActions() {
-		GState currentStatus = new GState("global-state");
+		GState currentStatus = new GState();
 		currentStatus.set("isMoving", false);
 		currentStatus.set("hasTarget", false);
 		
@@ -140,7 +140,7 @@ public class GPlannerTest extends TestCase {
 	
 
 	public void testPizzaPlan() {
-		GState currentStatus = new GState("global-state");
+		GState currentStatus = new GState();
 		currentStatus.set("hasIngridients", true);
 		currentStatus.set("hasPhoneNumber", true);
 		currentStatus.set("isHungry", true);

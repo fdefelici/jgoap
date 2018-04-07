@@ -23,4 +23,8 @@ public class GPlan {
 		_actions.add(anAction);
 	}
 
+	public boolean isEmpty() {
+		return _actions.isEmpty();
+	}
+
 }

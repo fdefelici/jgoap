@@ -29,8 +29,7 @@ public class ASGStateNode extends ASGNode {
 	}
 
 	@Override
-	public int g() {
+	public int costG() {
 		return 0;
 	}
-
 }

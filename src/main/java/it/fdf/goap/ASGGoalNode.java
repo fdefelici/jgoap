@@ -24,7 +24,7 @@ public class ASGGoalNode extends ASGNode {
 	}
 
 	@Override
-	public int g() {
+	public int costG() {
 		return 0;
 	}
 }

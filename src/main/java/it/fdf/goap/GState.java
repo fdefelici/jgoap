@@ -2,11 +2,9 @@ package it.fdf.goap;
 
 public class GState {
 
-	private String _name;
 	private XMap<String, Boolean> _map;
 
-	public GState(String name) {
-		_name = name;
+	public GState() {
 		_map = new XMap<>();
 	}
 
@@ -26,15 +24,24 @@ public class GState {
 	@Override
 	public boolean equals(Object obj) {
 		GState other = (GState)obj;
-		//return other._name.equals(_name);
 		return _map.equals(other._map);
 	}
 
 	public GState mergeWith(GState another) {
-		GState result = new GState(_name+"+"+another._name);
+		GState result = new GState();
 		result._map.put(_map);
 		result._map.put(another._map);
 		return result;
+	}
+
+	public GState deltaTo(GState other) {
+		GState result = new GState();
+		result._map = _map.deltaTo(other._map);
+		return result;
+	}
+
+	public int size() {
+		return _map.size();
 	}
 
 }

@@ -6,10 +6,12 @@ public abstract class ASGNode {
 
 	public abstract GState asState();
 	public abstract List<ASGNode> neighborsFrom(List<GAction> _actions);
-	abstract public int g();
+	abstract public int costG();
+	
 	abstract public void addActionTo(List<GAction> actions);
 	
 	private ASGNode _parent;
+	private int _costH;
 	
 	public ASGNode(ASGNode parent) {
 		_parent = parent;
@@ -19,7 +21,7 @@ public abstract class ASGNode {
 		return _parent;
 	}
 
-	public boolean cover(ASGNode another) {
+	public boolean canReach(ASGNode another) {
 		return asState().cover(another.asState());	
 	}
 	public boolean equals(Object obj) {
@@ -27,8 +29,8 @@ public abstract class ASGNode {
 		return asState().equals(((ASGNode)obj).asState());
 	}
 
-	public int f() {
-		return g(); //G + H 
+	public int costF() {
+		return costG() + costH(); 
 	}
 			
 	public void parent(ASGNode aNode) {
@@ -37,6 +39,13 @@ public abstract class ASGNode {
 
 	public boolean hasParent() {
 		return _parent != null;
+	}
+	public void costH(int h) {
+		_costH = h;
+	}
+	
+	public int costH() {
+		return _costH;
 	}
 
 }

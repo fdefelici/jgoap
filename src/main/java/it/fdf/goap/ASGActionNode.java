@@ -32,8 +32,8 @@ public class ASGActionNode extends ASGNode {
 	}
 
 	@Override
-	public int g() {
-		return parent().g() + _action.cost();
+	public int costG() {
+		return parent().costG() + _action.cost();
 	}
 
 }

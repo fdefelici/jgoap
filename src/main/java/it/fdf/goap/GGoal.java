@@ -8,7 +8,7 @@ public class GGoal {
 
 	public GGoal(String name) {
 		_name = name;
-		_expectations = new GState(_name+"expectations");
+		_expectations = new GState();
 	}
 
 	public void expect(String name, boolean value) {
@@ -25,6 +25,11 @@ public class GGoal {
 
 	public GState expectations() {
 		return _expectations;
+	}
+	
+	@Override
+	public String toString() {
+		return _name + ": " + expectations();
 	}
 
 }

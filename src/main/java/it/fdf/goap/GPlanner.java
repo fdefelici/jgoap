@@ -1,6 +1,8 @@
 package it.fdf.goap;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class GPlanner {
@@ -10,7 +12,7 @@ public class GPlanner {
 	private List<GGoal> _goals;
 
 	public GPlanner() {
-		_state = new GState("void-state");
+		_state = new GState();
 		_actions = new ArrayList<>();
 		_goals = new ArrayList<>();
 	}
@@ -27,37 +29,57 @@ public class GPlanner {
 		_goals.add(aGoal);
 	}
 
-	public GPlan plan() {		
-		GGoal pickedGoal = pickGoalWithLowerCost();
-		if (pickedGoal == null) return new GPlan();
+	public GPlan plan() {
+		sortByLowerCost(_goals);
 		
-		List<ASGNode> openNodes = new ArrayList<>();
-		List<ASGNode> closedNodes = new ArrayList<>();
-		
-		ASGNode startNode = new ASGStateNode(_state);
-		ASGNode endNode = new ASGGoalNode(pickedGoal); 
-		openNodes.add(startNode);
-		
-		while (!openNodes.isEmpty()) {
-			ASGNode pickedNode = pickNodeWithLowerCostFrom(openNodes);
-			openNodes.remove(pickedNode);
-			closedNodes.add(pickedNode);
+		GPlan result = new GPlan();
+		for (GGoal eachGoal : _goals) {			
+			List<ASGNode> openNodes = new ArrayList<>();
+			List<ASGNode> closedNodes = new ArrayList<>();
 			
-			if (pickedNode.cover(endNode)) {
-				endNode.parent(pickedNode);
-				break;
+			ASGNode startNode = new ASGStateNode(_state);
+			ASGNode endNode = new ASGGoalNode(eachGoal); 
+			openNodes.add(startNode);
+			
+			while (!openNodes.isEmpty()) {
+				ASGNode pickedNode = pickNodeWithLowerCostFrom(openNodes);
+				openNodes.remove(pickedNode);
+				closedNodes.add(pickedNode);
+				
+				if (pickedNode.canReach(endNode)) {
+					endNode.parent(pickedNode);
+					break;
+				}
+				
+				List<ASGNode> neighbors = pickedNode.neighborsFrom(_actions);
+				for (ASGNode eachNeigh : neighbors) {
+					if (closedNodes.contains(eachNeigh)) continue;
+					computeHestimatedCost(eachNeigh, endNode);
+					if (isAlreadyOpenWithLessCost(eachNeigh, openNodes)) continue;
+					openNodes.add(eachNeigh);
+				}
 			}
 			
-			List<ASGNode> neighbors = pickedNode.neighborsFrom(_actions);
-			for (ASGNode eachNeigh : neighbors) {
-				if (closedNodes.contains(eachNeigh)) continue;
-				if (isAlreadyOpenWithLessCost(eachNeigh, openNodes)) continue;
-				openNodes.add(eachNeigh);
-			}
-			
+			if (!endNode.hasParent()) continue; // SOLUTION NOT FOUND FOR THE GOAL. TRY WITH THE NEXT ONE.			
+			result = buildPlanFrom(endNode);
+			break;
 		}
-		
-		return buildPlanFrom(endNode);
+		return result;
+	}
+
+	private void sortByLowerCost(List<GGoal> goals) {
+		Collections.sort(goals, new Comparator<GGoal>() {
+			public int compare(GGoal o1, GGoal o2) {
+				if (o1.cost() < o2.cost()) return -1;
+				if (o1.cost() > o2.cost()) return 1;
+				return 0;
+			}
+		});
+	}
+
+	private void computeHestimatedCost(ASGNode node, ASGNode endNode) {
+		int stateDiff = node.asState().deltaTo(endNode.asState()).size();
+		node.costH(stateDiff);
 	}
 
 	private GPlan buildPlanFrom(ASGNode endNode) {
@@ -83,14 +105,14 @@ public class GPlanner {
 		ASGNode result = null;
 		for (ASGNode each : openNodes) {
 			if (result == null) result = each;
-			else if (each.f() < result.f()) result = each;
+			else if (each.costF() < result.costF()) result = each;
 		}
 		return result;
 	}
 
 	private boolean isAlreadyOpenWithLessCost(ASGNode eachNeigh, List<ASGNode> openedNodes) {
 		for (ASGNode each : openedNodes) {
-			if (each.equals(eachNeigh) && each.g() < eachNeigh.g()) return true; 
+			if (each.equals(eachNeigh) && each.costG() < eachNeigh.costG()) return true; 
 		}
 		return false;
 	}

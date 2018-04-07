@@ -56,5 +56,15 @@ public class XMap<TKey, TVal> {
 	public String toString() {
 		return _pairs.toString();
 	}
+
+	public XMap<TKey,TVal> deltaTo(XMap<TKey,TVal> other) {
+		XMap<TKey, TVal> result = new XMap<>();
+		for (TKey eachKey : other._pairs.keySet()) {
+			TVal otherVal = other.get(eachKey);
+			TVal val = _pairs.get(eachKey);
+			if (!otherVal.equals(val)) result.put(eachKey, otherVal);
+		}
+		return result;
+	}
 	
 }
