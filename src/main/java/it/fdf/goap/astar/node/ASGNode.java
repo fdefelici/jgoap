@@ -7,17 +7,16 @@ import it.fdf.goap.domain.GState;
 
 public abstract class ASGNode {
 
-	public abstract GState asState();
-	public abstract List<ASGNode> neighborsFrom(List<GAction> _actions);
-	abstract public int costG();
-	
-	abstract public void addActionTo(List<GAction> actions);
-	
 	private ASGNode _parent;
 	private int _costH;
 	
-	public ASGNode(ASGNode parent) {
-		_parent = parent;
+	abstract public int costG();
+	abstract public GState entryState();
+	abstract public GState resultState();
+	abstract public void addActionTo(List<GAction> actions);
+
+	public void parent(ASGNode aNode) {
+		_parent = aNode;
 	}
 
 	public ASGNode parent() {
@@ -25,21 +24,18 @@ public abstract class ASGNode {
 	}
 
 	public boolean canReach(ASGNode another) {
-		return asState().cover(another.asState());	
+		return resultState().cover(another.entryState());	
 	}
+		
 	public boolean equals(Object obj) {
 		if (!(obj instanceof ASGNode)) return false;
-		return asState().equals(((ASGNode)obj).asState());
+		return resultState().equals(((ASGNode)obj).resultState());
 	}
 
 	public int costF() {
 		return costG() + costH(); 
 	}
 			
-	public void parent(ASGNode aNode) {
-		_parent = aNode;
-	}
-
 	public boolean hasParent() {
 		return _parent != null;
 	}

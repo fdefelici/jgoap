@@ -1,6 +1,6 @@
 package it.fdf.goap.planner;
 
-import it.fdf.goap.astar.planner.GPlanner;
+import it.fdf.goap.astar.planner.ASGPlanner;
 import it.fdf.goap.domain.GAction;
 import it.fdf.goap.domain.GGoal;
 import it.fdf.goap.domain.GPlan;
@@ -10,7 +10,7 @@ import junit.framework.TestCase;
 public class GPlannerTest extends TestCase {
 
 	public void testEmptyPlanner() {
-		GPlanner planner = new GPlanner();
+		ASGPlanner planner = new ASGPlanner();
 		GPlan plan = planner.plan();
 		assertFalse(plan.hasGoal());
 		assertEquals(0, plan.actionSize());
@@ -45,7 +45,7 @@ public class GPlannerTest extends TestCase {
 		follow.expect("hasTarget", true);
 		follow.expect("isMoving", true);
 		
-		GPlanner planner = new GPlanner();
+		ASGPlanner planner = new ASGPlanner();
 		planner.setState(currentStatus);
 		planner.addAction(stopMove);
 		planner.addAction(acquireTarget);
@@ -89,7 +89,7 @@ public class GPlannerTest extends TestCase {
 		follow.expect("hasTarget", true);
 		follow.expect("isMoving", true);
 		
-		GPlanner planner = new GPlanner();
+		ASGPlanner planner = new ASGPlanner();
 		planner.setState(currentStatus);
 		planner.addAction(stopMove);
 		planner.addAction(acquireTarget);
@@ -134,7 +134,7 @@ public class GPlannerTest extends TestCase {
 		follow.expect("hasTarget", true);
 		follow.expect("isMoving", true);
 		
-		GPlanner planner = new GPlanner();
+		ASGPlanner planner = new ASGPlanner();
 		planner.setState(currentStatus);
 		planner.addAction(stopMove);
 		planner.addAction(acquireTarget);
@@ -190,7 +190,7 @@ public class GPlannerTest extends TestCase {
 		GGoal notHungry = new GGoal("not-hungry");
 		notHungry.expect("isHungry", false);
 		
-		GPlanner planner = new GPlanner();
+		ASGPlanner planner = new ASGPlanner();
 		planner.setState(currentStatus);
 		planner.addAction(phone);
 		planner.addAction(mix);

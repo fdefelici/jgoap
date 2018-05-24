@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import it.fdf.goap.astar.node.ASGNode;
+import it.fdf.goap.astar.node.adapter.ASGActionNode;
 import it.fdf.goap.astar.node.adapter.ASGGoalNode;
 import it.fdf.goap.astar.node.adapter.ASGStateNode;
 import it.fdf.goap.domain.GAction;
@@ -13,13 +14,13 @@ import it.fdf.goap.domain.GGoal;
 import it.fdf.goap.domain.GPlan;
 import it.fdf.goap.domain.GState;
 
-public class GPlanner {
+public class ASGPlanner {
 
 	private GState _state;
 	private List<GAction> _actions;
 	private List<GGoal> _goals;
 
-	public GPlanner() {
+	public ASGPlanner() {
 		_state = new GState();
 		_actions = new ArrayList<>();
 		_goals = new ArrayList<>();
@@ -59,7 +60,7 @@ public class GPlanner {
 					break;
 				}
 				
-				List<ASGNode> neighbors = pickedNode.neighborsFrom(_actions);
+				List<ASGNode> neighbors = neighborhood(pickedNode);
 				for (ASGNode eachNeigh : neighbors) {
 					if (closedNodes.contains(eachNeigh)) continue;
 					computeHestimatedCost(eachNeigh, endNode);
@@ -85,9 +86,21 @@ public class GPlanner {
 			}
 		});
 	}
+	
+	private List<ASGNode> neighborhood(ASGNode aNode) {
+		List<ASGNode> result = new ArrayList<>();
+		for (GAction each : _actions) {
+			ASGActionNode possibleChild = new ASGActionNode(each);
+			if (aNode.canReach(possibleChild)) {
+				possibleChild.parent(aNode);
+				result.add(possibleChild);
+			}
+		}
+		return result;		
+	}
 
 	private void computeHestimatedCost(ASGNode node, ASGNode endNode) {
-		int stateDiff = node.asState().deltaTo(endNode.asState()).size();
+		int stateDiff = node.resultState().deltaTo(endNode.resultState()).size();
 		node.costH(stateDiff);
 	}
 
@@ -125,14 +138,4 @@ public class GPlanner {
 		}
 		return false;
 	}
-
-	private GGoal pickGoalWithLowerCost() {
-		GGoal result = null;
-		for (GGoal each : _goals) {
-			if (result == null) result = each;
-			else if (each.cost() < result.cost()) result = each;
-		}
-		return result;
-	}
-
 }

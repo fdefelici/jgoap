@@ -1,6 +1,5 @@
 package it.fdf.goap.astar.node.adapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import it.fdf.goap.astar.node.ASGNode;
@@ -12,20 +11,17 @@ public class ASGStateNode extends ASGNode {
 	private GState _state;
 
 	public ASGStateNode(GState state) {
-		super(null);
 		_state = state;
 	}
 
-	public GState asState() {
+	@Override
+	public GState resultState() {
 		return _state;
 	}
-
-	public List<ASGNode> neighborsFrom(List<GAction> actions) {
-		List<ASGNode> result = new ArrayList<>();
-		for (GAction each : actions) {
-			if (asState().cover(each.expectations())) result.add(new ASGActionNode(each, this));
-		}
-		return result;
+	
+	@Override
+	public GState entryState() {
+		return new GState();
 	}
 
 	@Override
