@@ -1,4 +1,4 @@
-package it.fdf.goap;
+package it.fdf.goap.domain;
 
 public class GGoal {
 
@@ -28,8 +28,16 @@ public class GGoal {
 	}
 	
 	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof GGoal)) return false;
+		GGoal other = (GGoal) obj;
+		if (!_name.equals(other._name)) return false;
+		return true;
+	}
+	
+	@Override
 	public String toString() {
-		return _name + ": " + expectations();
+		return _name + ": [" + _cost +"] "+ expectations();
 	}
 
 }

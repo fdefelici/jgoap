@@ -1,4 +1,4 @@
-package it.fdf.goap;
+package it.fdf.goap.util;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

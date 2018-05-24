@@ -1,5 +1,6 @@
-package it.fdf.goap;
+package it.fdf.goap.domain;
 
+import it.fdf.goap.domain.GState;
 import junit.framework.TestCase;
 
 public class GStateTest extends TestCase {

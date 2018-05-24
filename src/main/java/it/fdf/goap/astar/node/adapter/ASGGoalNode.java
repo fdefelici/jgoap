@@ -1,7 +1,12 @@
-package it.fdf.goap;
+package it.fdf.goap.astar.node.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import it.fdf.goap.astar.node.ASGNode;
+import it.fdf.goap.domain.GAction;
+import it.fdf.goap.domain.GGoal;
+import it.fdf.goap.domain.GState;
 
 public class ASGGoalNode extends ASGNode {
 

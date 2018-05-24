@@ -1,5 +1,10 @@
-package it.fdf.goap;
+package it.fdf.goap.planner;
 
+import it.fdf.goap.astar.planner.GPlanner;
+import it.fdf.goap.domain.GAction;
+import it.fdf.goap.domain.GGoal;
+import it.fdf.goap.domain.GPlan;
+import it.fdf.goap.domain.GState;
 import junit.framework.TestCase;
 
 public class GPlannerTest extends TestCase {
@@ -7,6 +12,7 @@ public class GPlannerTest extends TestCase {
 	public void testEmptyPlanner() {
 		GPlanner planner = new GPlanner();
 		GPlan plan = planner.plan();
+		assertFalse(plan.hasGoal());
 		assertEquals(0, plan.actionSize());
 	}
 	
@@ -48,6 +54,8 @@ public class GPlannerTest extends TestCase {
 		planner.addGoal(follow);
 		
 		GPlan plan = planner.plan();
+		assertTrue(plan.hasGoal());
+		assertEquals(idle, plan.getGoal());
 		assertEquals(0, plan.actionSize());
 	}
 	
@@ -90,6 +98,8 @@ public class GPlannerTest extends TestCase {
 		planner.addGoal(follow);
 		
 		GPlan plan = planner.plan();
+		assertTrue(plan.hasGoal());
+		assertEquals(idle, plan.getGoal());
 		assertEquals(1, plan.actionSize());
 		assertEquals(stopMove, plan.actionAt(0));
 	}
@@ -133,6 +143,8 @@ public class GPlannerTest extends TestCase {
 		planner.addGoal(follow);
 		
 		GPlan plan = planner.plan();
+		assertTrue(plan.hasGoal());
+		assertEquals(follow, plan.getGoal());
 		assertEquals(2, plan.actionSize());
 		assertEquals(acquireTarget, plan.actionAt(0));
 		assertEquals(followTarget, plan.actionAt(1));
@@ -189,6 +201,8 @@ public class GPlannerTest extends TestCase {
 		planner.addGoal(notHungry);
 		
 		GPlan plan = planner.plan();
+		assertTrue(plan.hasGoal());
+		assertEquals(notHungry, plan.getGoal());
 		assertEquals(3, plan.actionSize());
 		assertEquals(phone, plan.actionAt(0));
 		assertEquals(wait, plan.actionAt(1));
@@ -197,6 +211,8 @@ public class GPlannerTest extends TestCase {
 		
 		wait.cost(1000000);
 		plan = planner.plan();
+		assertTrue(plan.hasGoal());
+		assertEquals(notHungry, plan.getGoal());
 		assertEquals(4, plan.actionSize());
 		assertEquals(mix, plan.actionAt(0));
 		assertEquals(bake, plan.actionAt(1));

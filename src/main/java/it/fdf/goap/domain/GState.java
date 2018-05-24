@@ -1,4 +1,6 @@
-package it.fdf.goap;
+package it.fdf.goap.domain;
+
+import it.fdf.goap.util.XMap;
 
 public class GState {
 

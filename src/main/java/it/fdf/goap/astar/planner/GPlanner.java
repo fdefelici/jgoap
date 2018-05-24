@@ -1,9 +1,17 @@
-package it.fdf.goap;
+package it.fdf.goap.astar.planner;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import it.fdf.goap.astar.node.ASGNode;
+import it.fdf.goap.astar.node.adapter.ASGGoalNode;
+import it.fdf.goap.astar.node.adapter.ASGStateNode;
+import it.fdf.goap.domain.GAction;
+import it.fdf.goap.domain.GGoal;
+import it.fdf.goap.domain.GPlan;
+import it.fdf.goap.domain.GState;
 
 public class GPlanner {
 
@@ -60,8 +68,9 @@ public class GPlanner {
 				}
 			}
 			
-			if (!endNode.hasParent()) continue; // SOLUTION NOT FOUND FOR THE GOAL. TRY WITH THE NEXT ONE.			
+			if (!endNode.hasParent()) continue; // SOLUTION NOT FOUND FOR THE GOAL. TRY WITH THE NEXT ONE.	
 			result = buildPlanFrom(endNode);
+			result.setGoal(eachGoal);
 			break;
 		}
 		return result;

@@ -1,5 +1,6 @@
-package it.fdf.goap;
+package it.fdf.goap.domain;
 
+import it.fdf.goap.util.XMap;
 import junit.framework.TestCase;
 
 public class XMapTest extends TestCase {

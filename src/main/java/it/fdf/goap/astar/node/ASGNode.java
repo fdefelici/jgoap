@@ -1,6 +1,9 @@
-package it.fdf.goap;
+package it.fdf.goap.astar.node;
 
 import java.util.List;
+
+import it.fdf.goap.domain.GAction;
+import it.fdf.goap.domain.GState;
 
 public abstract class ASGNode {
 

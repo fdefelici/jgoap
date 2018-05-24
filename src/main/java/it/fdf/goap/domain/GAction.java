@@ -1,4 +1,7 @@
-package it.fdf.goap;
+package it.fdf.goap.domain;
+
+import it.fdf.goap.task.IGTask;
+import it.fdf.goap.task.NullTask;
 
 public class GAction {
 
@@ -6,12 +9,18 @@ public class GAction {
 	private GState _expectations;
 	private GState _results;
 	private int _cost;
+	private IGTask _task;
 
 	public GAction(String name) {
+		this(name, new NullTask());
+	}
+	
+	public GAction(String name, IGTask task) {
 		_name = name;
 		_cost = 0;
 		_expectations = new GState();
 		_results = new GState();
+		_task = task;
 	}
 
 	public void expect(String name, boolean value) {
@@ -35,6 +44,10 @@ public class GAction {
 
 	public int cost() {
 		return _cost;
+	}
+	
+	public boolean perform() {
+		return _task.perform();
 	}
 	
 	@Override
